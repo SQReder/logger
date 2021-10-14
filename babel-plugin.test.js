@@ -13,6 +13,16 @@ const anotherFx = attach({
 const $has = restore(was, "");
 `;
 
+const effectorReact = `
+import { createEvent } from 'effector';
+import { useEvent } from 'effector-react';
+const event = createEvent();
+const Component = () => {
+  const eventFn = useEvent(event);
+  return <button onClick={() => eventFn()}>Click Me!</button>
+}
+`
+
 pluginTester({
   pluginName: 'effector-logger/babel-plugin',
   plugin: require('./babel-plugin'),
@@ -36,5 +46,11 @@ pluginTester({
         inspector: true,
       }
     },
+    'apply reactSsr flag': {
+      code: effectorReact,
+      pluginOptions: {
+        effector: { reactSsr: true }
+      }
+    }
   },
 });
